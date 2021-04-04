@@ -62,6 +62,15 @@ const keyUpHandler = (e) => {
     }
 }
 
+const touchHandler = (e) => {
+    if (e.touches) {
+        const relativeX = e.touches[0].pageX - canvas.offsetLeft;
+        if(relativeX > 0 && relativeX < canvas.width) {
+            paddleX = relativeX - paddleWidth/2;
+        }
+    }
+}
+
 const getRandomColour = () => {
     return "#" + Math.floor(Math.random()*16777215).toString(16);
 }
@@ -179,6 +188,8 @@ const draw = () => {
 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
+document.addEventListener("touchstart", touchHandler);
+document.addEventListener("touchmove", touchHandler);
 
 initGame();
 draw();
