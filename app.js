@@ -15,13 +15,13 @@ const paddleSpeed = 7;
 let rightPressed = false;
 let leftPressed = false;
 
-let brickRowCount = 8;
-let brickColumnCount = 4;
+let brickRowCount;
+let brickColumnCount;
 const brickHeight = 15;
 const brickPadding = 5;
 const brickOffsetTop = 30;
 const brickOffsetLeft = 15;
-let brickWidth = (canvas.width - (brickOffsetLeft * 2) - ((brickRowCount - 1) * brickPadding)) / brickRowCount;
+let brickWidth;
 let score = 0;
 let lives = 3;
 
@@ -31,14 +31,23 @@ let scoreAndLivesColour;
 let ballColour;
 
 let bricks = [];
-for(let c=0; c<brickColumnCount; c++) {
-    bricks[c] = [];
-    for(let r=0; r<brickRowCount; r++) {
-        bricks[c][r] = { x: 0, y: 0, status: 1 };
-    }
-}
 
 const initGame = () => {
+    if (window.innerWidth < 480) {
+        canvas.width = window.innerWidth;
+    } else {
+        canvas.width = 480;
+    }
+    canvas.height = 320;
+    brickRowCount = getRandomNumber(8,5);
+    brickColumnCount = getRandomNumber(5,4);
+    brickWidth = (canvas.width - (brickOffsetLeft * 2) - ((brickRowCount - 1) * brickPadding)) / brickRowCount;
+    for(let c=0; c<brickColumnCount; c++) {
+        bricks[c] = [];
+        for(let r=0; r<brickRowCount; r++) {
+            bricks[c][r] = { x: 0, y: 0, status: 1 };
+        }
+    }
     userColour = getRandomColour();
     scoreAndLivesColour = getRandomColour();
     ballColour = getRandomColour();
@@ -63,6 +72,7 @@ const keyUpHandler = (e) => {
 }
 
 const touchHandler = (e) => {
+    e.preventDefault();
     if (e.touches) {
         const relativeX = e.touches[0].pageX - canvas.offsetLeft;
         if(relativeX > 0 && relativeX < canvas.width) {
@@ -73,6 +83,12 @@ const touchHandler = (e) => {
 
 const getRandomColour = () => {
     return "#" + Math.floor(Math.random()*16777215).toString(16);
+}
+
+const getRandomNumber = (max, min) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 const collisionDetection = () => {
@@ -111,11 +127,11 @@ const drawPaddle = () => {
 }
 
 const drawBricks = () => {
-    for(var c=0; c<brickColumnCount; c++) {
-        for(var r=0; r<brickRowCount; r++) {
+    for(let c=0; c<brickColumnCount; c++) {
+        for(let r=0; r<brickRowCount; r++) {
             if(bricks[c][r].status == 1) {
-                var brickX = (r*(brickWidth+brickPadding))+brickOffsetLeft;
-                var brickY = (c*(brickHeight+brickPadding))+brickOffsetTop;
+                let brickX = (r*(brickWidth+brickPadding))+brickOffsetLeft;
+                let brickY = (c*(brickHeight+brickPadding))+brickOffsetTop;
                 bricks[c][r].x = brickX;
                 bricks[c][r].y = brickY;
                 ctx.beginPath();
