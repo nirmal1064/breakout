@@ -9,7 +9,7 @@ let dy = -ballSpeed;
 
 const paddleHeight = 10;
 let paddleWidth;
-let paddleX = (canvas.width-paddleWidth)/2;
+let paddleX;
 const paddleSpeed = 7;
 
 let rightPressed = false;
@@ -39,6 +39,7 @@ const initGame = () => {
         canvas.width = 480;
     }
     paddleWidth = canvas.width / 6.4;
+    paddleX = (canvas.width-paddleWidth)/2;
     canvas.height = 320;
     brickRowCount = getRandomNumber(8,5);
     brickColumnCount = getRandomNumber(5,4);
@@ -205,7 +206,6 @@ const draw = () => {
 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
-// document.addEventListener("touchstart", touchHandler);
 document.addEventListener("touchmove", touchHandler);
 
 initGame();
