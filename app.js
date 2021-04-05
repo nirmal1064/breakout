@@ -39,9 +39,9 @@ let ballColour;
 
 let bricks;
 const myStorage = window.localStorage;
-myStorage.setItem("highScore", score);
 
 const initGame = () => {
+    localStorage.setItem("highScore", "hs");
     brickRowCount = getRandomNumber(8,5);
     brickColumnCount = getRandomNumber(5,4);
     brickWidth = (canvas.width - (brickOffsetLeft * 2) - ((brickRowCount - 1) * brickPadding)) / brickRowCount;
