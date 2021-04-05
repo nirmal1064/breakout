@@ -4,7 +4,7 @@ const assets = [
     "./index.html",
     "./app.js",
     "./style.css",
-    "./favicon.ico"
+    "./favicon.png"
 ];
 
 // install event
