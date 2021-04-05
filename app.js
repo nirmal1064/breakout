@@ -1,14 +1,3 @@
-// adding serviceworker
-window.addEventListener('load', function() {
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js').then(function (registration) {
-            console.log(`Service Worker Registered ${registration.scope}`);
-        }).catch(function (err) {
-            console.log('Service Worker Not Registered', err);
-        });
-    }
-});
-
 const canvas = document.getElementById("breakout");
 if (window.innerWidth < 480) {
     canvas.width = window.innerWidth;
@@ -40,6 +29,7 @@ const brickOffsetTop = 30;
 const brickOffsetLeft = 15;
 let brickWidth;
 let score = 0;
+let currentScore = 0;
 let lives = 3;
 
 // defining colours
@@ -47,23 +37,28 @@ let userColour;
 let scoreAndLivesColour;
 let ballColour;
 
-let bricks = [];
+let bricks;
+const myStorage = window.localStorage;
+myStorage.setItem("highScore", score);
 
 const initGame = () => {
-    // paddleWidth = canvas.width / 6.4;
-    // paddleX = (canvas.width-paddleWidth)/2;
     brickRowCount = getRandomNumber(8,5);
     brickColumnCount = getRandomNumber(5,4);
     brickWidth = (canvas.width - (brickOffsetLeft * 2) - ((brickRowCount - 1) * brickPadding)) / brickRowCount;
+    userColour = getRandomColour();
+    scoreAndLivesColour = getRandomColour();
+    ballColour = getRandomColour();
+    initBricks();
+}
+
+const initBricks = () => {
+    bricks = [];
     for(let c=0; c<brickColumnCount; c++) {
         bricks[c] = [];
         for(let r=0; r<brickRowCount; r++) {
             bricks[c][r] = { x: 0, y: 0, status: 1 };
         }
     }
-    userColour = getRandomColour();
-    scoreAndLivesColour = getRandomColour();
-    ballColour = getRandomColour();
 }
 
 const keyDownHandler = (e) => {
@@ -112,8 +107,10 @@ const collisionDetection = () => {
                 if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {
                     dy = -dy;
                     b.status = 0;
-                    score++;
-                    if(score == brickRowCount * brickColumnCount) {
+                    currentScore++;
+                    score += currentScore;
+                    if(currentScore == brickRowCount * brickColumnCount) {
+                        currentScore = 0;
                         alert("YOU WIN, CONGRATS!");
                         document.location.reload();
                     }
@@ -185,7 +182,7 @@ const draw = () => {
         dy = -dy;
     }
     else if(y + dy > canvas.height-ballRadius) {
-        if(x > paddleX && x < paddleX + paddleWidth) {
+        if(x >= paddleX && x <= paddleX + paddleWidth) {
             dy = -dy;
         }
         else {
