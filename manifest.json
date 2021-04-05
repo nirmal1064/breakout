@@ -1,0 +1,17 @@
+{
+    "name": "Breakout Game",
+    "short_name": "BreakoutGame",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#07ed13",
+    "theme_color": "#07ed13",
+    "orientation": "portrait-primary",
+    "description": "Breakout Game",
+    "icons": [
+        {
+            "src": "favicon.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ]
+}
