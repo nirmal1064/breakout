@@ -1,4 +1,10 @@
 const canvas = document.getElementById("breakout");
+if (window.innerWidth < 480) {
+    canvas.width = window.innerWidth;
+} else {
+    canvas.width = 480;
+}
+canvas.height = 320;
 const ctx = canvas.getContext("2d");
 const ballRadius = 10;
 let x = canvas.width/2;
@@ -8,8 +14,8 @@ let dx = ballSpeed;
 let dy = -ballSpeed;
 
 const paddleHeight = 10;
-let paddleWidth;
-let paddleX;
+let paddleWidth = canvas.width / 6.4;
+let paddleX = (canvas.width-paddleWidth)/2;
 const paddleSpeed = 7;
 
 let rightPressed = false;
@@ -33,14 +39,8 @@ let ballColour;
 let bricks = [];
 
 const initGame = () => {
-    if (window.innerWidth < 480) {
-        canvas.width = window.innerWidth;
-    } else {
-        canvas.width = 480;
-    }
-    paddleWidth = canvas.width / 6.4;
-    paddleX = (canvas.width-paddleWidth)/2;
-    canvas.height = 320;
+    // paddleWidth = canvas.width / 6.4;
+    // paddleX = (canvas.width-paddleWidth)/2;
     brickRowCount = getRandomNumber(8,5);
     brickColumnCount = getRandomNumber(5,4);
     brickWidth = (canvas.width - (brickOffsetLeft * 2) - ((brickRowCount - 1) * brickPadding)) / brickRowCount;
